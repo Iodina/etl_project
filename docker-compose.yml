@@ -1,0 +1,8 @@
+etl:
+  build: .
+  volumes:
+    - .:/app
+  links:
+    - db
+db:
+  image: mongo:3.4.4
