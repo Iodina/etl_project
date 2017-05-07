@@ -12,9 +12,8 @@ from ETL.exceptions import EmptyValueException
 
 from config import REQUIRED_FIELDS, INPUT_FILE
 
-INPUT = os.path.join(ROOT_DIR, 'data', 'valid.csv')
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-
+INPUT = os.path.join(ROOT_DIR, 'data', 'valid.csv')
 
 class TestTransformClass(unittest.TestCase):
     def setUp(self):

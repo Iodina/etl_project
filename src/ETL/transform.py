@@ -57,9 +57,14 @@ class Transformer(object):
                                       str(dict_with_empty_values.keys()))
         return filtered
 
-    def is_player_pitcher(self, filtered_required_nonempty):
+    @staticmethod
+    def player_factory(fields):
         """Decide whether input data is a Pitcher or non-Pitcher"""
-        return filtered_required_nonempty.get(TABLE_RESOLVER_FIELD) == 'Pitcher'
+        resolver = fields.get(TABLE_RESOLVER_FIELD)
+        if resolver == 'Pitcher':
+            return Pitcher
+        else:
+            return Hitter
 
     def transform(self, data):
         """Transform data according to the rules.
@@ -76,9 +81,6 @@ class Transformer(object):
         :return transformed data: ETL.transform.Pitcher object or ETL.transform.Hitter object
         """
         filter_req_nonempty = self.filter_nonempty_fields(data)
-        if self.is_player_pitcher(filter_req_nonempty):
-            filter_req_nonempty.pop(TABLE_RESOLVER_FIELD)
-            return Pitcher(**filter_req_nonempty)
-        else:
-            filter_req_nonempty.pop(TABLE_RESOLVER_FIELD)
-            return Hitter(**filter_req_nonempty)
+        player_class = self.player_factory(filter_req_nonempty)
+        filter_req_nonempty.pop(TABLE_RESOLVER_FIELD)
+        return player_class(**filter_req_nonempty)

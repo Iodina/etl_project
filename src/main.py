@@ -29,15 +29,14 @@ if __name__ == "__main__":
             record_loader = Loader()
             record_transformer = Transformer(required_data=REQUIRED_FIELDS)
             try:
-                record_extractor = Extractor(file_name=file)
+                with Extractor(file_name=file) as record_extractor:
+                    # ETL process
+                    for record in record_extractor:
+                        try:
+                            record_loader.load(record_transformer.transform(record))
+                        except (EtlTransformException, PyMongoError) as e:
+                            record_loader.save_error(e)
             except (TypeError, ValueError, csv.Error) as e:
                 raise MalformedCsvError('Error occurred during parsing the csv document', e) from None
         else:
             raise FileNotFoundError('There is no such file', file)
-
-        # ETL process
-        for record in record_extractor:
-            try:
-                record_loader.load(record_transformer.transform(record))
-            except (EtlTransformException, PyMongoError) as e:
-                record_loader.save_error(e)

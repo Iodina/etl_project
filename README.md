@@ -1,10 +1,11 @@
-1. Installing Docker Compose
+1. Install Docker Compose
  https://docs.docker.com/compose/install/
 2. Run app
 - Go to root dir: cd etl_project
 - Put your input data into "input" folder
-- Build and run containers: docker-compose run etl bash
-- Run program: python src/main.py ../app/input/your_data.txt
+- Build and run containers: sudo docker-compose run etl bash
+- Run program: python src/main.py input/player.csv
+- Run tests: python src/tests/test_extract.py
 3. Check results
 - Go to root dir: cd etl_project
 - Find name of the runnig container with mongo: docker ps | grep "mongo"

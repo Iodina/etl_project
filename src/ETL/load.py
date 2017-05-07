@@ -15,10 +15,8 @@ class Loader(object):
     """
 
     def __init__(self):
-        if os.environ.get('DB_PORT_27017_TCP_ADDR', None):
-            client = MongoClient(os.environ['DB_PORT_27017_TCP_ADDR'], 27017)
-        else:
-            client = MongoClient('localhost', 27017)
+        client = MongoClient(os.environ.get('DB_PORT_27017_TCP_ADDR',
+                                            'localhost'), 27017)
         self.db = client.target_database
 
     def load(self, data):
